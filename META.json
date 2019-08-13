@@ -37,11 +37,14 @@
       },
       "runtime" : {
          "requires" : {
+            "Moose" : "2.00",
             "perl" : "5.028"
          }
       },
       "test" : {
          "requires" : {
+            "Test::Fatal" : "0",
+            "Test::Moose" : "0",
             "Test::More" : "0.96"
          }
       }

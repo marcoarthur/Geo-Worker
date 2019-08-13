@@ -1,30 +1,53 @@
 package Geo::BoundBox;
 
 use 5.028;
-use experimental qw( signatures );
 use Moose;
 use Carp;
 
 with 'Throwable';
 
+use constant { 
+	LATLOGMIN => -90.0,
+	LATLOGMAX => 90.0,
+};
+
+
 
 has [ qw( xmin xmax ymin ymax ) ] => (
 	is => 'ro',
-	isa => 'Float',
+	isa => 'Num',
 	required => 1,
 );
 
-sub BUILD( $self )  {
+sub BUILD {
+	my $self = shift;
+	my %args = ( xmin => 'xmax', ymin => 'ymax' );
 
-	my @args = qw( xmin xmax ymin ymax );
+	while ( my ( $argmin, $argmax ) = each %args ) { 
+		# min < -90: throw error
+		$self->throw(
+			error => sprintf(
+				"%s (%s) below minimun",
+				$argmin, $self->$argmin
+			)
+		) if $self->$argmin < LATLOGMIN;
 
-	for ( my ( $argmin, $argmax ) = @args ) { 
+		# max > 90: throw error
+		$self->throw(
+			error => sprintf(
+				"%s (%s) above maximum",
+				$argmax, $self->$argmax
+			)
+		) if $self->$argmax > LATLOGMAX;
 
 		# min > max: throw error
 		$self->throw( 
-			sprintf "%s (%s)  greater then %s (%s)",
-			$argmin, $argmax, $self->$argmin, $self->$argmax
-		) if $self->$argmin > $self->$argmax;
+			error => sprintf(
+				"%s (%s)  greater than %s (%s)",
+				$argmin, $self->$argmin, $argmax, $self->$argmax
+			)
+		) if $self->$argmin >= $self->$argmax;
+
 	}
 }
 
