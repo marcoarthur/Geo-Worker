@@ -6,6 +6,12 @@ use Carp;
 
 with 'Throwable';
 
+use constant { 
+	LATLOGMIN => -90.0,
+	LATLOGMAX => 90.0,
+};
+
+
 
 has [ qw( xmin xmax ymin ymax ) ] => (
 	is => 'ro',
@@ -18,6 +24,21 @@ sub BUILD {
 	my %args = ( xmin => 'xmax', ymin => 'ymax' );
 
 	while ( my ( $argmin, $argmax ) = each %args ) { 
+		# min < -90: throw error
+		$self->throw(
+			error => sprintf(
+				"%s (%s) below minimun",
+				$argmin, $self->$argmin
+			)
+		) if $self->$argmin < LATLOGMIN;
+
+		# max > 90: throw error
+		$self->throw(
+			error => sprintf(
+				"%s (%s) above maximum",
+				$argmax, $self->$argmax
+			)
+		) if $self->$argmax > LATLOGMAX;
 
 		# min > max: throw error
 		$self->throw( 
@@ -26,6 +47,7 @@ sub BUILD {
 				$argmin, $self->$argmin, $argmax, $self->$argmax
 			)
 		) if $self->$argmin >= $self->$argmax;
+
 	}
 }
 
