@@ -1,7 +1,6 @@
 package Geo::BoundBox;
 
 use 5.028;
-use experimental qw( signatures );
 use Moose;
 use Carp;
 
@@ -10,21 +9,23 @@ with 'Throwable';
 
 has [ qw( xmin xmax ymin ymax ) ] => (
 	is => 'ro',
-	isa => 'Float',
+	isa => 'Num',
 	required => 1,
 );
 
-sub BUILD( $self )  {
+sub BUILD {
+	my $self = shift;
+	my %args = ( xmin => 'xmax', ymin => 'ymax' );
 
-	my @args = qw( xmin xmax ymin ymax );
-
-	for ( my ( $argmin, $argmax ) = @args ) { 
+	while ( my ( $argmin, $argmax ) = each %args ) { 
 
 		# min > max: throw error
 		$self->throw( 
-			sprintf "%s (%s)  greater then %s (%s)",
-			$argmin, $argmax, $self->$argmin, $self->$argmax
-		) if $self->$argmin > $self->$argmax;
+			error => sprintf(
+				"%s (%s)  greater than %s (%s)",
+				$argmin, $self->$argmin, $argmax, $self->$argmax
+			)
+		) if $self->$argmin >= $self->$argmax;
 	}
 }
 
