@@ -2,7 +2,6 @@ package Geo::BoundBox;
 
 use 5.028;
 use Moose;
-use Carp;
 
 with 'Throwable';
 
@@ -10,7 +9,6 @@ use constant {
 	LATLOGMIN => -90.0,
 	LATLOGMAX => 90.0,
 };
-
 
 
 has [ qw( xmin xmax ymin ymax ) ] => (
@@ -50,6 +48,9 @@ sub BUILD {
 
 	}
 }
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

@@ -1,14 +1,56 @@
 package Geo::Worker;
 
 use 5.028;
+use experimental qw(signatures);
 our $VERSION = '0.01';
 use Moose;
+use URI;
+
+# endpoint
+our $OVERPASS = '';
 
 has bb => (
-	is => 'ro',
-	isa => 'Geo::BoundBox',
-	required => 1,
+    is       => 'ro',
+    isa      => 'Geo::BoundBox',
+    required => 1,
 );
+
+has query => (
+    is       => 'ro',
+    isa      => 'Geo::Overpass::Query',
+    required => 1,
+);
+
+# overpass url
+has _url => (
+    is       => 'ro',
+    isa      => 'URI',
+    required => 1,
+    default  => sub { URI->new($OVERPASS) }
+);
+
+# config file
+has config => (
+    is       => 'ro',
+    isa      => 'URI',
+    required => 1,
+    default  => sub { URI->new }
+);
+
+has _ua => (
+    is       => 'ro',
+    isa      => 'Mojo::UserAgent',
+    required => 1,
+    default  => sub { Mojo::UserAgent->new() }
+);
+
+sub run($self) {
+}
+
+sub run_query ( $self, $query ) {
+}
+
+__PACKAGE__->meta->make_immutable;
 
 1;
 
