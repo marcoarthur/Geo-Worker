@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/marcoarthur/Geo-Worker.svg?branch=master)](https://travis-ci.org/marcoarthur/Geo-Worker)
+[![Coverage Status](https://coveralls.io/repos/marcoarthur/Geo-Worker/badge.svg?branch=master)](https://coveralls.io/r/marcoarthur/Geo-Worker?branch=master)
+
 # NAME
 
 Geo::Worker - A Minion Worker to retrieve xml file from a boundbox
