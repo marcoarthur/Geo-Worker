@@ -1,6 +1,6 @@
 use strict;
 use Test::More;
-#use Geo::Worker;
+use Geo::Overpass::Query;
 
 # replace with the actual test
 ok 1;
