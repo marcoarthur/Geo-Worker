@@ -1,20 +1,16 @@
 language: perl
 perl:
-  - "5.22.2"
   - "5.28.2"
+  - "5.30"
   - "blead"
 matrix:
   include:
-    - perl: 5.18
+    - perl: 5.28.2
+      env: COVERAGE=1
+    - perl: 5.30
       env: COVERAGE=1
   allow_failures:
     - perl: "blead"
-matrix:
-  include:
-    - perl: 5.18
-      env: COVERAGE=1   # enables coverage+coveralls reporting
-  allow_failures:
-    - perl: blead       # ignore failures for blead perl
 sudo: false             # faster builds as long as you don't need sudo access
 cache:
   directories:
